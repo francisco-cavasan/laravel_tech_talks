@@ -41,7 +41,7 @@ class EventsController extends Controller
 
     public function destroy(Event $event)
     {
-        if ($event->usersCount > 0) {
+        if ($event->users_count > 0) {
             return response()->json([
                 'message' => 'Cannot delete event with users',
             ], 400);

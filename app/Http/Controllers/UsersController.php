@@ -42,7 +42,7 @@ class UsersController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->eventsCount > 0) {
+        if ($user->events_count > 0) {
             $user->events()->detach();
         }
 
