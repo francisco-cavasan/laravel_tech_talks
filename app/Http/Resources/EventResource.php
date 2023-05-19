@@ -18,8 +18,8 @@ class EventResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'starts_at' => $this->email,
-            'ends_at' => $this->created_at,
+            'starts_at' => $this->starts_at,
+            'ends_at' => $this->ends_at,
             'is_finished' => $this->is_finished,
             'users_count' => $this->users_count,
             'users' => $this->whenLoaded('users', function () {

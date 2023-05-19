@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -27,12 +28,12 @@ class User extends Model
         'created_at' => 'datetime',
     ];
 
-    public function events()
+    public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, UserEvent::class, 'user_id', 'event_id');
     }
 
-    public function getEventsCountAttribute()
+    public function getEventsCountAttribute(): int
     {
         return $this->events()->count();
     }

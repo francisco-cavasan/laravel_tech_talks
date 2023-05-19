@@ -62,9 +62,11 @@ class EventsController extends Controller
             $events->where('start', '>=', $validated['start'])
                 ->where('end', '<=', $validated['end']);
         }
+
         if ($validated['name']) {
             $events->where('name', 'like', '%' . $validated['name'] . '%');
         }
+
         if ($validated['user_email']) {
             $events->whereHas('users', function ($query) use ($validated) {
                 $query->where('email', $validated['user_email']);

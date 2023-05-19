@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Event extends Model
 {
+    protected $table = 'events';
+
     /**
      * The attributes that are mass assignable.
      */
@@ -23,17 +26,17 @@ class Event extends Model
         'created_at' => 'datetime',
     ];
 
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, UserEvent::class, 'event_id', 'user_id');
     }
 
-    public function getUsersCountAttribute()
+    public function getUsersCountAttribute(): int
     {
         return $this->users()->count();
     }
 
-    public function getIsFinishedAttribute()
+    public function getIsFinishedAttribute(): bool
     {
         return $this->ends_at < now();
     }
