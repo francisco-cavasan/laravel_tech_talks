@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\MyController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\EventsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,15 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('sign-up', [AuthController::class, 'signUp']);
+Route::prefix('user')->group(function () {
+    Route::get('', [UsersController::class, 'index']);
+    Route::get('{user}', [UsersController::class, 'show']);
+    Route::post('', [UsersController::class, 'store']);
+    Route::put('{user}', [UsersController::class, 'update']);
+    Route::delete('{user}', [UsersController::class, 'destroy']);
+    Route::post('add-to-event', [UsersController::class, 'addToEvent']);
+    Route::delete('{user}/{event}', [UsersController::class, 'removeFromEvent']);
 });
 
-Route::prefix('my-api')->group(function () {
-    Route::get('/', [MyController::class, 'index']);
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('event')->group(function () {
+    Route::get('', [EventsController::class, 'index']);
+    Route::get('{event}', [EventsController::class, 'show']);
+    Route::post('', [EventsController::class, 'store']);
+    Route::put('{event}', [EventsController::class, 'update']);
+    Route::delete('{event}', [EventsController::class, 'destroy']);
 });
