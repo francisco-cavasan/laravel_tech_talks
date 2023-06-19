@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\EventsController;
-use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,19 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('user')->group(function () {
-    Route::get('', [UsersController::class, 'index']);
-    Route::get('{user}', [UsersController::class, 'show']);
-    Route::post('', [UsersController::class, 'store']);
-    Route::put('{user}', [UsersController::class, 'update']);
-    Route::delete('{user}', [UsersController::class, 'destroy']);
-    Route::post('add-to-event', [UsersController::class, 'addToEvent']);
-    Route::delete('{user}/{event}', [UsersController::class, 'removeFromEvent']);
+    Route::get('', [UserController::class, 'index']);
+    Route::get('{user}', [UserController::class, 'show']);
+    Route::post('', [UserController::class, 'store']);
+    Route::put('{user}', [UserController::class, 'update']);
+    Route::delete('{user}', [UserController::class, 'destroy']);
+    Route::post('add-to-event', [UserController::class, 'addToEvent']);
+    Route::delete('{user}/{event}', [UserController::class, 'removeFromEvent']);
 });
 
 Route::prefix('event')->group(function () {
-    Route::get('', [EventsController::class, 'index']);
-    Route::get('{event}', [EventsController::class, 'show']);
-    Route::post('', [EventsController::class, 'store']);
-    Route::put('{event}', [EventsController::class, 'update']);
-    Route::delete('{event}', [EventsController::class, 'destroy']);
+    Route::get('', [EventController::class, 'index']);
+    Route::get('{event}', [EventController::class, 'show']);
+    Route::post('', [EventController::class, 'store']);
+    Route::put('{event}', [EventController::class, 'update']);
+    Route::delete('{event}', [EventController::class, 'destroy']);
 });

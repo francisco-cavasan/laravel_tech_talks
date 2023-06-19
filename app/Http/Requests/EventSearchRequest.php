@@ -15,8 +15,8 @@ class EventSearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start' => 'nullable|date|required_with:end|before_or_equal:end',
-            'end' => 'nullable|date|required_with:start|after_or_equal:start',
+            'starts_at' => 'nullable|date|required_with:ends_at|before_or_equal:ends_at',
+            'ends_at' => 'nullable|date|required_with:starts_at|after_or_equal:starts_at',
             'name' => 'nullable|string',
             'user_email' => 'nullable|email',
         ];

@@ -6,9 +6,19 @@ use App\Http\Requests\EventRequest;
 use App\Http\Requests\EventSearchRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Services\Event\CreateEventService;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class EventsController extends Controller
 {
+    private CreateEventService $createEventService;
+
+    public function __construct(CreateEventService $createEventService)
+    {
+        $this->createEventService = $createEventService;
+    }
+
     public function index()
     {
         $events = Event::with('users')->get();
@@ -25,7 +35,15 @@ class EventsController extends Controller
     {
         $validated = $request->validated();
 
-        $event = Event::create($validated);
+        try {
+            $event = $this->createEventService->handle($validated);
+        } catch (Throwable $exception) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Cannot create user',
+            ], 400);
+        }
 
         return response()->json(new EventResource($event), 201);
     }
@@ -58,9 +76,9 @@ class EventsController extends Controller
 
         $events = Event::with('users')->query();
 
-        if ($validated['start'] && $validated['end']) {
-            $events->where('start', '>=', $validated['start'])
-                ->where('end', '<=', $validated['end']);
+        if ($validated['starts_at'] && $validated['ends_at']) {
+            $events->where('starts_at', '>=', $validated['starts_at'])
+                ->where('ends_at', '<=', $validated['ends_at']);
         }
 
         if ($validated['name']) {
