@@ -5,8 +5,6 @@ LABEL maintainer="Francisco Cavasan"
 ARG NODE_VERSION=18
 ARG POSTGRES_VERSION=15
 
-WORKDIR /var/www/html
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
 ENV WWWGROUP=1000
