@@ -19,4 +19,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: ./
-          targed: project
+          target: project
