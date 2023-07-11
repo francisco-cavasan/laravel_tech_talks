@@ -6,23 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  checks:
-    name: Checks
-    runs-on: ubuntu-latest
-    outputs:
-      branch: ${{ steps.branch-name.outputs.current_branch }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Notify start
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            The ${{ github.event_name }} event on ${{ github.event.repository.name }}/${{ github.ref }} triggered the ${{ github.workflow }}.
-
-  main:
+  deploy:
     name: Build & Deploy
     needs: checks
     runs-on: ubuntu-latest
