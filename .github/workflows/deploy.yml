@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Docker Compose
-        uses: KengoTODA/actions-setup-docker-compose@v1
+        uses: docker/compose-cli@v1
         with:
-          version: "2.14.2"
+          version: "1.29.2"
 
       - name: Build and test Laravel app
         run: |
@@ -26,11 +26,13 @@ jobs:
           docker-compose run --rm app php artisan test
 
       - name: Deploy to remote server
-        uses: appleboy/scp-action@master
+        uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          source: ./
-          target: project
-          args: -r -P 22 --quiet --exclude .git
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          script: |
+            cd /path/to/remote/directory
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
