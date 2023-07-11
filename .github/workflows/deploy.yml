@@ -21,9 +21,9 @@ jobs:
       - name: Build and test Laravel app
         run: |
           docker-compose build
-          docker-compose run --rm app composer install --no-interaction
-          docker-compose run --rm app php artisan key:generate
-          docker-compose run --rm app php artisan test
+          docker-compose run --rm laravel.test composer install --no-interaction
+          docker-compose run --rm laravel.test php artisan key:generate
+          docker-compose run --rm laravel.test php artisan test
 
       - name: Deploy to remote server
         uses: appleboy/scp-action@master
@@ -42,4 +42,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd project
-            docker-compose run --rm app php artisan migrate --force
+            docker-compose run --rm laravel.test php artisan migrate --force
