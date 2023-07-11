@@ -4,7 +4,6 @@ on:
   push:
     branches: [main, development]
   workflow_dispatch:
-name: Laravel Docker CI/CD
 
 jobs:
   build-and-deploy:
@@ -15,9 +14,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Docker Compose
-        uses: docker/compose-cli@v1
+        uses: KengoTODA/actions-setup-docker-compose@v1
         with:
-          version: "1.29.2"
+          version: "2.14.2"
 
       - name: Build and test Laravel app
         run: |
@@ -44,4 +43,3 @@ jobs:
           script: |
             cd project
             docker-compose run --rm app php artisan migrate --force
-
