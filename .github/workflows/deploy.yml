@@ -6,17 +6,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Build & Deploy
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Deploy files to server
-        uses: appleboy/scp-action@v0.1.4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        uses: docker/compose-cli@v1
+        with:
+          version: "1.29.2"
+
+      - name: Build and test Laravel app
+        run: |
+          docker-compose build
+          docker-compose run --rm app composer install --no-interaction
+          docker-compose run --rm app php artisan key:generate
+          docker-compose run --rm app php artisan test
+
+      - name: Deploy to remote server
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: ./
           target: project
+          args: -r -P 22 --quiet --exclude .git
