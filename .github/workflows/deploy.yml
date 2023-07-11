@@ -4,6 +4,7 @@ on:
   push:
     branches: [main, development]
   workflow_dispatch:
+name: Laravel Docker CI/CD
 
 jobs:
   build-and-deploy:
@@ -11,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Compose
         uses: docker/compose-cli@v1
@@ -26,13 +27,21 @@ jobs:
           docker-compose run --rm app php artisan test
 
       - name: Deploy to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          source: ./
+          target: project
+
+      - name: Run migrations
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USERNAME }}
           password: ${{ secrets.REMOTE_PASSWORD }}
           script: |
-            cd /path/to/remote/directory
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+            cd project
+            docker-compose run --rm app php artisan migrate --force
+
