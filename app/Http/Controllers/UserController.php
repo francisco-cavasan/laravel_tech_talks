@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     private CreateUserService $createUserService;
     private UpdateUserService $updateUserService;

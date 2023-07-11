@@ -10,7 +10,7 @@ use App\Services\Event\CreateEventService;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class EventsController extends Controller
+class EventController extends Controller
 {
     private CreateEventService $createEventService;
 
